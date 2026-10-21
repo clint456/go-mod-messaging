@@ -69,7 +69,7 @@ func TestIntegrationWithMQTTServer(t *testing.T) {
 }
 
 // TestUnsubscribeIntegrationWithMQTTServer end-to-end test subscribing and unsubscribing.
-// MQTT broker must be running with Device virtual publishing events.
+// MQTT broker must be running with Node virtual publishing events.
 func TestUnsubscribeIntegrationWithMQTTServer(t *testing.T) {
 	client := createAndConnectMqttClient(t)
 	defer func() { _ = client.Disconnect() }()
@@ -124,7 +124,7 @@ func TestUnsubscribeIntegrationWithMQTTServer(t *testing.T) {
 }
 
 // TestUnsubscribeIntegrationWithMQTTServer end-to-end test subscribing and unsubscribing.
-// MQTT broker must be running with Device virtual publishing events.
+// MQTT broker must be running with Node virtual publishing events.
 func TestRequestIntegrationWithMQTTServer(t *testing.T) {
 	client := createAndConnectMqttClient(t)
 

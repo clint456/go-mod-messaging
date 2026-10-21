@@ -22,7 +22,7 @@ The footer should contain a [closing reference to an issue](https://help.github.
 
 Example 1:
 ```
-feat: add new device wizard
+feat: add new node wizard
 ```
 
 Example 2:

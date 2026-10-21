@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	testDeviceName  = "test-device"
+	testNodeName    = "test-node"
 	testCommandName = "test-command"
 )
 
@@ -36,8 +36,8 @@ var expectedRequestID = uuid.NewString()
 var expectedCorrelationID = uuid.NewString()
 var errorResponse = types.NewMessageEnvelopeWithError(expectedRequestID, "request timed out")
 
-func TestCommandClient_AllDeviceCoreCommands(t *testing.T) {
-	responseDTO := responses.NewMultiDeviceCoreCommandsResponse(expectedRequestID, "", http.StatusOK, 0, nil)
+func TestCommandClient_AllNodeCoreCommands(t *testing.T) {
+	responseDTO := responses.NewMultiNodeCoreCommandsResponse(expectedRequestID, "", http.StatusOK, 0, nil)
 
 	responseEnvelope, err := types.NewMessageEnvelopeForResponse(responseDTO, expectedRequestID, expectedCorrelationID, common.ContentTypeJSON)
 	require.NoError(t, err)
@@ -57,7 +57,7 @@ func TestCommandClient_AllDeviceCoreCommands(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			client := getCommandClientWithMockMessaging(t, test.ExpectedResponse, test.ExpectedRequestError)
 
-			res, err := client.AllDeviceCoreCommands(context.Background(), 0, 20)
+			res, err := client.AllNodeCoreCommands(context.Background(), 0, 20)
 
 			if test.ExpectError {
 				require.Error(t, err)
@@ -65,14 +65,14 @@ func TestCommandClient_AllDeviceCoreCommands(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			require.IsType(t, res, responses.MultiDeviceCoreCommandsResponse{})
+			require.IsType(t, res, responses.MultiNodeCoreCommandsResponse{})
 			assert.Equal(t, res.RequestId, expectedRequestID)
 		})
 	}
 }
 
-func TestCommandClient_AllDeviceCoreCommandsUsesCommandQueryRequestTopicAndResponsePrefix(t *testing.T) {
-	responseDTO := responses.NewMultiDeviceCoreCommandsResponse(expectedRequestID, "", http.StatusOK, 0, nil)
+func TestCommandClient_AllNodeCoreCommandsUsesCommandQueryRequestTopicAndResponsePrefix(t *testing.T) {
+	responseDTO := responses.NewMultiNodeCoreCommandsResponse(expectedRequestID, "", http.StatusOK, 0, nil)
 
 	responseEnvelope, err := types.NewMessageEnvelopeForResponse(responseDTO, expectedRequestID, expectedCorrelationID, common.ContentTypeJSON)
 	require.NoError(t, err)
@@ -86,13 +86,13 @@ func TestCommandClient_AllDeviceCoreCommandsUsesCommandQueryRequestTopicAndRespo
 		Once()
 
 	client := NewCommandClientWithNameFieldEscape(messageClient, "edgex", timeout)
-	_, err = client.AllDeviceCoreCommands(context.Background(), 0, 20)
+	_, err = client.AllNodeCoreCommands(context.Background(), 0, 20)
 
 	require.NoError(t, err)
 }
 
-func TestCommandClient_DeviceCoreCommandsByDeviceName(t *testing.T) {
-	responseDTO := responses.NewDeviceCoreCommandResponse(expectedRequestID, "", http.StatusOK, dtos.DeviceCoreCommand{})
+func TestCommandClient_NodeCoreCommandsByNodeName(t *testing.T) {
+	responseDTO := responses.NewNodeCoreCommandResponse(expectedRequestID, "", http.StatusOK, dtos.NodeCoreCommand{})
 
 	responseEnvelope, err := types.NewMessageEnvelopeForResponse(responseDTO, expectedRequestID, expectedCorrelationID, common.ContentTypeJSON)
 	require.NoError(t, err)
@@ -112,7 +112,7 @@ func TestCommandClient_DeviceCoreCommandsByDeviceName(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			client := getCommandClientWithMockMessaging(t, test.ExpectedResponse, test.ExpectedRequestError)
 
-			res, err := client.DeviceCoreCommandsByDeviceName(context.Background(), testDeviceName)
+			res, err := client.NodeCoreCommandsByNodeName(context.Background(), testNodeName)
 
 			if test.ExpectError {
 				require.Error(t, err)
@@ -120,7 +120,7 @@ func TestCommandClient_DeviceCoreCommandsByDeviceName(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-			require.IsType(t, res, responses.DeviceCoreCommandResponse{})
+			require.IsType(t, res, responses.NodeCoreCommandResponse{})
 			assert.Equal(t, res.RequestId, expectedRequestID)
 		})
 	}
@@ -147,7 +147,7 @@ func TestCommandClient_IssueGetCommandByName(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			client := getCommandClientWithMockMessaging(t, test.ExpectedResponse, test.ExpectedRequestError)
 
-			res, err := client.IssueGetCommandByName(context.Background(), testDeviceName, testCommandName, false, true)
+			res, err := client.IssueGetCommandByName(context.Background(), testNodeName, testCommandName, false, true)
 
 			if test.ExpectError {
 				require.Error(t, err)
@@ -182,7 +182,7 @@ func TestCommandClient_IssueGetCommandByNameWithQueryParams(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			client := getCommandClientWithMockMessaging(t, test.ExpectedResponse, test.ExpectedRequestError)
 
-			res, err := client.IssueGetCommandByNameWithQueryParams(context.Background(), testDeviceName, testCommandName, nil)
+			res, err := client.IssueGetCommandByNameWithQueryParams(context.Background(), testNodeName, testCommandName, nil)
 
 			if test.ExpectError {
 				require.Error(t, err)
@@ -217,7 +217,7 @@ func TestCommandClient_IssueSetCommandByName(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			client := getCommandClientWithMockMessaging(t, test.ExpectedResponse, test.ExpectedRequestError)
 
-			res, err := client.IssueSetCommandByName(context.Background(), testDeviceName, testCommandName, nil)
+			res, err := client.IssueSetCommandByName(context.Background(), testNodeName, testCommandName, nil)
 
 			if test.ExpectError {
 				require.Error(t, err)
@@ -252,7 +252,7 @@ func TestCommandClient_IssueSetCommandByNameWithObject(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			client := getCommandClientWithMockMessaging(t, test.ExpectedResponse, test.ExpectedRequestError)
 
-			res, err := client.IssueSetCommandByName(context.Background(), testDeviceName, testCommandName, nil)
+			res, err := client.IssueSetCommandByName(context.Background(), testNodeName, testCommandName, nil)
 
 			if test.ExpectError {
 				require.Error(t, err)

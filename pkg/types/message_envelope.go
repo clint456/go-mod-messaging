@@ -84,7 +84,7 @@ func NewMessageEnvelope(payload any, ctx context.Context) MessageEnvelope {
 }
 
 // NewMessageEnvelopeForRequest creates a new MessageEnvelope for sending request to EdgeX via internal
-// MessageBus to target Device Service. Used when request is from internal App Service via command client.
+// MessageBus to target Node Service. Used when request is from internal App Service via command client.
 func NewMessageEnvelopeForRequest(payload any, queryParams map[string]string) MessageEnvelope {
 	envelope := MessageEnvelope{
 		CorrelationID: uuid.NewString(),
@@ -115,7 +115,7 @@ func NewMessageEnvelopeForRequest(payload any, queryParams map[string]string) Me
 	return envelope
 }
 
-// NewMessageEnvelopeForResponse creates a new MessageEnvelope for sending response from Device Service back to Core Command.
+// NewMessageEnvelopeForResponse creates a new MessageEnvelope for sending response from Node Service back to Core Command.
 func NewMessageEnvelopeForResponse(payload any, requestId string, correlationId string, contentType string) (MessageEnvelope, error) {
 	var err error
 	if _, err = uuid.Parse(requestId); err != nil {

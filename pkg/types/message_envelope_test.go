@@ -257,7 +257,7 @@ func testMessageEnvelope() MessageEnvelope {
 }
 
 func TestGetMsgPayloadFromBytesToStruct(t *testing.T) {
-	event := dtos.NewEvent("profile", "device", "source")
+	event := dtos.NewEvent("profile", "node", "source")
 	testStructPayload := responses.NewEventResponse(testRequestId, "", http.StatusOK, event)
 	testStructBytesPayload, err := json.Marshal(testStructPayload)
 	require.NoError(t, err)
